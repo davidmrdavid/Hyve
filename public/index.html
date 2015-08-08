@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <base href="/">
 
-  <title>Starter Node and Angular</title>
+  <title>New Note &middot; Hyve1</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -11,6 +11,8 @@
   <!-- Include the Quill library -->
   <link rel="stylesheet" href="http://cdn.quilljs.com/0.20.0/quill.snow.css" />
   <script src="quill/quill.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -40,100 +42,6 @@
       };
     };
   </script>
-
-  <style>
-    @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100);
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Roboto Slab';
-    }
-    body {
-      margin: 0;
-    }
-    header {
-      height: 60px;
-      width: 100%;
-      background: linear-gradient(#fefefe 0%, #eee 100%);
-      display: flex;
-      font-weight: 700;
-    }
-    .logo {
-      flex: 0 auto;
-      width: 150px;
-      color: #fb000d;
-      font-size: 30px;
-      line-height: 60px;
-      text-align: center;
-      text-shadow: 1px 1px 0px #f1f1f1, 2px 2px 0px rgba(0,0,0,0.2);
-    }
-    .title {
-      display: block;
-      background: transparent;
-      border: 1px solid #777;
-      border-width: 0 1px;
-      outline: none;
-      padding: 0 15px;
-      font-size: 24px;
-      flex: 1 auto;
-    }
-    .classSelect {
-      text-shadow: -1px -1px 0px rgba(0,0,0,0.3), 1px 1px 0px #fff;
-      cursor: pointer;
-      height: 60px;
-      float: right;
-      width: 250px;
-      position: relative;
-      line-height: 60px;
-      padding: 0 15px;
-      transition: all 0.2s ease-in-out;
-    }
-    .classSelect:hover {
-      background: #fff;
-    }
-    .classSelect i {
-      width: 30px;
-    }
-    .classSelect ul {
-      margin: 0;
-      list-style: none;
-      overflow: hidden;
-      top: 60px;
-      padding: 0;
-      left: -1px;
-      width: 250px;
-      position: absolute;
-      background: #fff;
-      box-shadow: 0 0 3px rgba(0,0,0,0.3);
-      max-height: 0;
-      transition: all 0.3s ease-in-out;
-      border: 1px solid #aaa;
-      border-width: 0 1px 1px 1px;
-    }
-    .classSelect:hover ul {
-      z-index: 1;
-      max-height: 100vh;
-    }
-    .class {
-      width: 250px;
-    }
-    .class a {
-      padding: 0 15px;
-      display: block;
-      text-decoration: none;
-      color: #000;
-    }
-    .class a:hover, .class a.active {
-      background: #e1e1e1;
-    }
-    #full-editor {
-      background: linear-gradient(#fff 0px, #fff 23px, #5dcec6 24px);
-      background-position: 0px 12px;
-      background-size: 100% 24px;
-      line-height: 24px;
-      font-size: 16px;
-    }
-  </style>
 </head>
 <body>
   <header>
