@@ -1,0 +1,65 @@
+<html>
+<head>
+<script language="JavaScript" type="text/javascript">
+function showDiv(){
+    if(document.getElementById('showDiv').style.display == 'none'){
+        document.getElementById('showDiv').style.display = 'block';
+    }else{
+        document.getElementById('showDiv').style.display = 'none';
+    }
+}
+</script>
+<style>
+h3 {
+float: left;
+padding-left: 2%;
+}
+body {
+background: #ADD8E6;
+}
+.sclass {
+margin-left: 100px;
+margin-top: -2px;
+}
+.showDiv {
+display:in-line block;
+float:left;
+}
+.classes { 
+padding-top: 5px;
+padding-left: 50%;
+display:in-line;
+float:left;
+}
+.notestitle {
+float:left;
+padding-left: 50%;
+}
+</style>
+</head>
+<body>
+<div class = "header" style="height:50px;
+    border:1px solid red;
+    width:99%;
+background-color: #0000;
+margin:10px auto; float:left; display:in-line block">
+<h3>Logo</h3>
+<textarea id = "notestitle" placeholder = "notes title">
+</textarea>
+<div style="position:relative">
+        <div style="margin-left:200px; padding-left: 55%; margin-top:-3%;">Classes</div>
+        <div style="margin-left:200px; padding-left: 55%;" onclick="showDiv();"></div>  
+        <div id="showDiv" style="display:none; margin-left: 12%;padding-left: 55%; padding-top: 5px;"></div>
+        
+        <ul style ="margin-left: 100px" class="classes">
+         <li class="sclass">UCSD CSE11</li>
+         <li class="sclass">Haverford CS105</li>
+         <li class="sclass">Data Structures</li>
+         <li class="sclass">Discrete Math</li>
+         <li class="sclass">Linear Algebra</li>
+         <li class="sclass">Multivariable Calculus</li>
+        </ul>
+</div>
+</div>
+</body>
+</html>

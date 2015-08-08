@@ -27,17 +27,17 @@ require('./app/routes')(app); // pass our application into our routes
 
 
 
-var Student=require('./config/dbMode.js').Student
-var Class=require('./config/dbMode.js').Class
-var Teacher=require('./config/dbMode.js').Teacher
+// var Student=require('./config/dbMode.js').Student
+// var Class=require('./config/dbMode.js').Class
+// var Teacher=require('./config/dbMode.js').Teacher
 
-var Bla= new Student({
-  studentName:"Joe"
-})
-Bla.save(function(err,data){
-  if(err) return console.log(err);
-  console.log(data);
-})
+// var Bla= new Student({
+//   studentName:"Joe"
+// })
+// Bla.save(function(err,data){
+//   if(err) return console.log(err);
+//   console.log(data);
+// })
 
 
 
