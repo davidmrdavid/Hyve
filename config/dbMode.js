@@ -10,26 +10,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 var studentSchema = mongoose.Schema({
-        local            : {
-            email        : String,
-            password     : String,
-        },
-        facebook         : {
-            id           : String,
-            token        : String,
-            email        : String,
-            name         : String
-        },
-        google           : {
-            id           : String,
-            token        : String,
-            email        : String,
-            name         : String
-        },
-        studentName    :{type: String, default:"Student Name: "},
-        createdAt: { type: Number, default: Date.now() },
-        classId:String,
-        word:String,
+        word: String,
         time: Number
 });
 
@@ -65,8 +46,11 @@ var classSchema = mongoose.Schema({
         time: Number
 });
 
+var masterWordSchema = mongoose.Schema({
+        hashMap : String
+})
 
-
+exports.MasterCount = mongoose.model('MasterCount', masterWordSchema);
 exports.Class = mongoose.model('Class',classSchema);
 exports.Teacher = mongoose.model('Teacher',teacherSchema);
 exports.Student = mongoose.model('Student',studentSchema);
