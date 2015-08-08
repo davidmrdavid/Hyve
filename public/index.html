@@ -1,27 +1,108 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<base href="/">
+  <meta charset="UTF-8">
+  <base href="/">
 
-	<title>Starter Node and Angular</title>
+  <title>Starter Node and Angular</title>
 
-	<!-- CSS -->
-	<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
 
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		var socket = io.connect();
-		
-		socket.emit("ready");
+  <!-- Include the Quill library -->
+  <script src="quill/quill.js"></script>
 
-		socket.on("new visitor", function () {
-			console.log("new visitor event fired from node");
-		});
-	</script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect();
+    
+    socket.emit("ready");
+
+    socket.on("new visitor", function () {
+      console.log("new visitor event fired from node");
+    });
+
+
+    var quill = new Quill(document.querySelector('#editor'));
+    quill.addModule('toolbar', { container: '#toolbar' });
+
+
+    function showDiv(){
+      if(document.getElementById('showDiv').style.display == 'none'){
+        document.getElementById('showDiv').style.display = 'block';
+      } else {
+        document.getElementById('showDiv').style.display = 'none';
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+    header {
+      height: 80px;
+      width: 100%;
+      background: linear-gradient(#ccc 0%, #aaa 100%);
+      box-sizing: border-box;
+    }
+    h3 {
+      float: left;
+      padding-left: 2%;
+    }
+    body {
+      background: #ADD8E6;
+    }
+    .sclass {
+      margin-left: 100px;
+      margin-top: -2px;
+    }
+    .showDiv {
+      display:in-line block;
+      float:left;
+    }
+    .classes { 
+      padding-top: 5px;
+      padding-left: 50%;
+      display:in-line;
+      float:left;
+    }
+    .notestitle {
+      float:left;
+      padding-left: 50%;
+    }
+  </style>
 </head>
 <body>
-	<h1>Hello World</h1>
+  <header>
+    <h3>Logo</h3>
+    <textarea id = "notestitle" placeholder = "notes title">
+    </textarea>
+    <div style="position:relative">
+      <div style="margin-left:200px; padding-left: 55%; margin-top:-3%;" onclick = "showDiv();">Classes</div>
+      <div id="showDiv" style="display:none; margin-left: 12%;padding-left: 55%; padding-top: 5px;"></div>
+      <ul style ="margin-left: 160px" class="classes">
+        <li class="sclass">UCSD CSE11</li>
+        <li class="sclass">Haverford CS105</li>
+        <li class="sclass">Data Structures</li>
+        <li class="sclass">Discrete Math</li>
+        <li class="sclass">Linear Algebra</li>
+        <li class="sclass">Multivariable Calculus</li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Create the toolbar container -->
+  <div id="toolbar">
+    <button class="ql-bold">Bold</button>
+    <button class="ql-italic">Italic</button>
+  </div>
+
+  <!-- Create the editor container -->
+  <div id="editor">
+    <div>Hello World!</div>
+    <div>Some initial <b>bold</b> text</div>
+    <div><br></div>
+  </div>
 </body>
 </html>
