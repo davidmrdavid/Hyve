@@ -6,15 +6,15 @@
   <title>Starter Node and Angular</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
   <!-- Include the Quill library -->
+  <link rel="stylesheet" href="http://cdn.quilljs.com/0.20.0/quill.snow.css" />
   <script src="quill/quill.js"></script>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io.connect();
+    var socket = io.connect('http://localhost:8080');
     
     socket.emit("ready");
 
@@ -23,83 +23,253 @@
     });
 
 
-    var quill = new Quill(document.querySelector('#editor'));
-    quill.addModule('toolbar', { container: '#toolbar' });
+    window.onload = function () {
+      var fullEditor = new Quill('#full-editor', {
+        modules: {
+          'toolbar': { container: '#full-toolbar' },
+          'link-tooltip': true
+        },
+        theme: 'snow'
+      });
 
-
-    function showDiv(){
-      if(document.getElementById('showDiv').style.display == 'none'){
-        document.getElementById('showDiv').style.display = 'block';
-      } else {
-        document.getElementById('showDiv').style.display = 'none';
-      }
-    }
+      var cs = document.querySelector('.classSelect');
+      cs.onmouseover = folderOpen;
+      cs.onmouseout = folderOpen;
+      function folderOpen () {
+        cs.querySelector('i').classList.toggle('fa-folder-open');
+      };
+    };
   </script>
 
   <style>
+    @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100);
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto Slab';
+    }
     body {
       margin: 0;
     }
     header {
-      height: 80px;
+      height: 60px;
       width: 100%;
-      background: linear-gradient(#ccc 0%, #aaa 100%);
-      box-sizing: border-box;
+      background: linear-gradient(#fefefe 0%, #eee 100%);
+      display: flex;
+      font-weight: 700;
     }
-    h3 {
-      float: left;
-      padding-left: 2%;
+    .logo {
+      flex: 0 auto;
+      width: 150px;
+      color: #fb000d;
+      font-size: 30px;
+      line-height: 60px;
+      text-align: center;
+      text-shadow: 1px 1px 0px #f1f1f1, 2px 2px 0px rgba(0,0,0,0.2);
     }
-    body {
-      background: #ADD8E6;
+    .title {
+      display: block;
+      background: transparent;
+      border: 1px solid #777;
+      border-width: 0 1px;
+      outline: none;
+      padding: 0 15px;
+      font-size: 24px;
+      flex: 1 auto;
     }
-    .sclass {
-      margin-left: 100px;
-      margin-top: -2px;
+    .classSelect {
+      text-shadow: -1px -1px 0px rgba(0,0,0,0.3), 1px 1px 0px #fff;
+      cursor: pointer;
+      height: 60px;
+      float: right;
+      width: 250px;
+      position: relative;
+      line-height: 60px;
+      padding: 0 15px;
+      transition: all 0.2s ease-in-out;
     }
-    .showDiv {
-      display:in-line block;
-      float:left;
+    .classSelect:hover {
+      background: #fff;
     }
-    .classes { 
-      padding-top: 5px;
-      padding-left: 50%;
-      display:in-line;
-      float:left;
+    .classSelect i {
+      width: 30px;
     }
-    .notestitle {
-      float:left;
-      padding-left: 50%;
+    .classSelect ul {
+      margin: 0;
+      list-style: none;
+      overflow: hidden;
+      top: 60px;
+      padding: 0;
+      left: -1px;
+      width: 250px;
+      position: absolute;
+      background: #fff;
+      box-shadow: 0 0 3px rgba(0,0,0,0.3);
+      max-height: 0;
+      transition: all 0.3s ease-in-out;
+      border: 1px solid #aaa;
+      border-width: 0 1px 1px 1px;
+    }
+    .classSelect:hover ul {
+      z-index: 1;
+      max-height: 100vh;
+    }
+    .class {
+      width: 250px;
+    }
+    .class a {
+      padding: 0 15px;
+      display: block;
+      text-decoration: none;
+      color: #000;
+    }
+    .class a:hover, .class a.active {
+      background: #e1e1e1;
+    }
+    #full-editor {
+      background: linear-gradient(#fff 0px, #fff 23px, #5dcec6 24px);
+      background-position: 0px 12px;
+      background-size: 100% 24px;
+      line-height: 24px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h3>Logo</h3>
-    <textarea id = "notestitle" placeholder = "notes title">
-    </textarea>
-    <div style="position:relative">
-      <div style="margin-left:200px; padding-left: 55%; margin-top:-3%;" onclick = "showDiv();">Classes</div>
-      <div id="showDiv" style="display:none; margin-left: 12%;padding-left: 55%; padding-top: 5px;"></div>
-      <ul style ="margin-left: 160px" class="classes">
-        <li class="sclass">UCSD CSE11</li>
-        <li class="sclass">Haverford CS105</li>
-        <li class="sclass">Data Structures</li>
-        <li class="sclass">Discrete Math</li>
-        <li class="sclass">Linear Algebra</li>
-        <li class="sclass">Multivariable Calculus</li>
+    <div class="logo">Hyve</div>
+    <input class="title" placeholder="Title your note here.">
+    <div class="classSelect">
+      <i class="fa fa-lg fa-folder"></i> CSE 11
+      <ul>
+        <li class="class"><a href="#" class="active">CSE 11</a></li>
+        <li class="class"><a href="#">CHEM 6B</a></li>
+        <li class="class"><a href="#">MATH 15A</a></li>
+        <li class="class"><a href="#">CSE 30</a></li>
       </ul>
     </div>
   </header>
 
   <!-- Create the toolbar container -->
-  <div id="toolbar">
-    <button class="ql-bold">Bold</button>
-    <button class="ql-italic">Italic</button>
+  <div id="full-toolbar" class="toolbar">
+    <span class="ql-format-group">
+      <select title="Font" class="ql-font">
+        <option value="sans-serif" selected="">Sans Serif</option>
+        <option value="serif">Serif</option>
+        <option value="monospace">Monospace</option>
+      </select>
+      <select title="Size" class="ql-size">
+        <option value="10px">Small</option>
+        <option value="13px" selected="">Normal</option>
+        <option value="18px">Large</option>
+        <option value="32px">Huge</option>
+      </select>
+    </span>
+    <span class="ql-format-group">
+      <span title="Bold" class="ql-format-button ql-bold"></span>
+      <span class="ql-format-separator"></span>
+      <span title="Italic" class="ql-format-button ql-italic"></span>
+      <span class="ql-format-separator"></span>
+      <span title="Underline" class="ql-format-button ql-underline"></span>
+      <span class="ql-format-separator"></span>
+      <span title="Strikethrough" class="ql-format-button ql-strike"></span>
+    </span>
+    <span class="ql-format-group">
+      <select title="Text Color" class="ql-color">
+        <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)" selected=""></option>
+        <option value="rgb(230, 0, 0)" label="rgb(230, 0, 0)"></option>
+        <option value="rgb(255, 153, 0)" label="rgb(255, 153, 0)"></option>
+        <option value="rgb(255, 255, 0)" label="rgb(255, 255, 0)"></option>
+        <option value="rgb(0, 138, 0)" label="rgb(0, 138, 0)"></option>
+        <option value="rgb(0, 102, 204)" label="rgb(0, 102, 204)"></option>
+        <option value="rgb(153, 51, 255)" label="rgb(153, 51, 255)"></option>
+        <option value="rgb(255, 255, 255)" label="rgb(255, 255, 255)"></option>
+        <option value="rgb(250, 204, 204)" label="rgb(250, 204, 204)"></option>
+        <option value="rgb(255, 235, 204)" label="rgb(255, 235, 204)"></option>
+        <option value="rgb(255, 255, 204)" label="rgb(255, 255, 204)"></option>
+        <option value="rgb(204, 232, 204)" label="rgb(204, 232, 204)"></option>
+        <option value="rgb(204, 224, 245)" label="rgb(204, 224, 245)"></option>
+        <option value="rgb(235, 214, 255)" label="rgb(235, 214, 255)"></option>
+        <option value="rgb(187, 187, 187)" label="rgb(187, 187, 187)"></option>
+        <option value="rgb(240, 102, 102)" label="rgb(240, 102, 102)"></option>
+        <option value="rgb(255, 194, 102)" label="rgb(255, 194, 102)"></option>
+        <option value="rgb(255, 255, 102)" label="rgb(255, 255, 102)"></option>
+        <option value="rgb(102, 185, 102)" label="rgb(102, 185, 102)"></option>
+        <option value="rgb(102, 163, 224)" label="rgb(102, 163, 224)"></option>
+        <option value="rgb(194, 133, 255)" label="rgb(194, 133, 255)"></option>
+        <option value="rgb(136, 136, 136)" label="rgb(136, 136, 136)"></option>
+        <option value="rgb(161, 0, 0)" label="rgb(161, 0, 0)"></option>
+        <option value="rgb(178, 107, 0)" label="rgb(178, 107, 0)"></option>
+        <option value="rgb(178, 178, 0)" label="rgb(178, 178, 0)"></option>
+        <option value="rgb(0, 97, 0)" label="rgb(0, 97, 0)"></option>
+        <option value="rgb(0, 71, 178)" label="rgb(0, 71, 178)"></option>
+        <option value="rgb(107, 36, 178)" label="rgb(107, 36, 178)"></option>
+        <option value="rgb(68, 68, 68)" label="rgb(68, 68, 68)"></option>
+        <option value="rgb(92, 0, 0)" label="rgb(92, 0, 0)"></option>
+        <option value="rgb(102, 61, 0)" label="rgb(102, 61, 0)"></option>
+        <option value="rgb(102, 102, 0)" label="rgb(102, 102, 0)"></option>
+        <option value="rgb(0, 55, 0)" label="rgb(0, 55, 0)"></option>
+        <option value="rgb(0, 41, 102)" label="rgb(0, 41, 102)"></option>
+        <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+      </select>
+      <span class="ql-format-separator"></span>
+      <select title="Background Color" class="ql-background">
+        <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+        <option value="rgb(230, 0, 0)" label="rgb(230, 0, 0)"></option>
+        <option value="rgb(255, 153, 0)" label="rgb(255, 153, 0)"></option>
+        <option value="rgb(255, 255, 0)" label="rgb(255, 255, 0)"></option>
+        <option value="rgb(0, 138, 0)" label="rgb(0, 138, 0)"></option>
+        <option value="rgb(0, 102, 204)" label="rgb(0, 102, 204)"></option>
+        <option value="rgb(153, 51, 255)" label="rgb(153, 51, 255)"></option>
+        <option value="rgb(255, 255, 255)" label="rgb(255, 255, 255)" selected=""></option>
+        <option value="rgb(250, 204, 204)" label="rgb(250, 204, 204)"></option>
+        <option value="rgb(255, 235, 204)" label="rgb(255, 235, 204)"></option>
+        <option value="rgb(255, 255, 204)" label="rgb(255, 255, 204)"></option>
+        <option value="rgb(204, 232, 204)" label="rgb(204, 232, 204)"></option>
+        <option value="rgb(204, 224, 245)" label="rgb(204, 224, 245)"></option>
+        <option value="rgb(235, 214, 255)" label="rgb(235, 214, 255)"></option>
+        <option value="rgb(187, 187, 187)" label="rgb(187, 187, 187)"></option>
+        <option value="rgb(240, 102, 102)" label="rgb(240, 102, 102)"></option>
+        <option value="rgb(255, 194, 102)" label="rgb(255, 194, 102)"></option>
+        <option value="rgb(255, 255, 102)" label="rgb(255, 255, 102)"></option>
+        <option value="rgb(102, 185, 102)" label="rgb(102, 185, 102)"></option>
+        <option value="rgb(102, 163, 224)" label="rgb(102, 163, 224)"></option>
+        <option value="rgb(194, 133, 255)" label="rgb(194, 133, 255)"></option>
+        <option value="rgb(136, 136, 136)" label="rgb(136, 136, 136)"></option>
+        <option value="rgb(161, 0, 0)" label="rgb(161, 0, 0)"></option>
+        <option value="rgb(178, 107, 0)" label="rgb(178, 107, 0)"></option>
+        <option value="rgb(178, 178, 0)" label="rgb(178, 178, 0)"></option>
+        <option value="rgb(0, 97, 0)" label="rgb(0, 97, 0)"></option>
+        <option value="rgb(0, 71, 178)" label="rgb(0, 71, 178)"></option>
+        <option value="rgb(107, 36, 178)" label="rgb(107, 36, 178)"></option>
+        <option value="rgb(68, 68, 68)" label="rgb(68, 68, 68)"></option>
+        <option value="rgb(92, 0, 0)" label="rgb(92, 0, 0)"></option>
+        <option value="rgb(102, 61, 0)" label="rgb(102, 61, 0)"></option>
+        <option value="rgb(102, 102, 0)" label="rgb(102, 102, 0)"></option>
+        <option value="rgb(0, 55, 0)" label="rgb(0, 55, 0)"></option>
+        <option value="rgb(0, 41, 102)" label="rgb(0, 41, 102)"></option>
+        <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+      </select>
+    </span>
+    <span class="ql-format-group">
+      <span title="List" class="ql-format-button ql-list"></span>
+      <span class="ql-format-separator"></span>
+      <span title="Bullet" class="ql-format-button ql-bullet"></span>
+      <span class="ql-format-separator"></span>
+      <select title="Text Alignment" class="ql-align">
+        <option value="left" label="Left" selected=""></option>
+        <option value="center" label="Center"></option>
+        <option value="right" label="Right"></option>
+        <option value="justify" label="Justify"></option>
+      </select>
+    </span>
+    <span class="ql-format-group">
+      <span title="Link" class="ql-format-button ql-link"></span>
+    </span>
   </div>
 
   <!-- Create the editor container -->
-  <div id="editor">
+  <div id="full-editor">
     <div>Hello World!</div>
     <div>Some initial <b>bold</b> text</div>
     <div><br></div>
