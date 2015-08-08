@@ -8,7 +8,7 @@ var methodOverride = require('method-override');
 // configuration ===========================================
 	
 // config files
-var db = require('./config/db');
+// var db = require('./config/db');
 
 var port = process.env.PORT || 8080; // set our port
 // mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
@@ -22,7 +22,25 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
 
 // routes ==================================================
+
 require('./app/routes')(app); // pass our application into our routes
+
+
+
+var Student=require('./config/dbMode.js').Student
+var Class=require('./config/dbMode.js').Class
+var Teacher=require('./config/dbMode.js').Teacher
+
+var Bla= new Student({
+  studentName:"Joe"
+})
+Bla.save(function(err,data){
+  if(err) return console.log(err);
+  console.log(data);
+})
+
+
+
 
 // start app ===============================================
 app.listen(port);	
