@@ -4,8 +4,7 @@ var app            = express();
 var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
-var backend        = require('app/backend.js');
-var socket         = require('app/io.js');
+var backend        = require('./app/backend.js');
 
 var port = process.env.PORT || 8080; // set our port
 // mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
@@ -25,3 +24,18 @@ var Teacher=require('./config/dbMode.js').Teacher;
 // start app ===============================================
 app.listen(port);
 exports = module.exports = app; 						// expose app
+
+app.http().io();
+// sockets
+app.io.on('connection', function (socket) {
+	app.io.on('new word', function (data) {
+    	// backend.saveWordFunc(data);
+    	console.log(data);
+
+	});
+	app.io.on('get top', function (data) {
+    	var trendingWords = backend.getTrendingWords(data);
+    	req.io.respond(req)
+	}); 
+
+ });
