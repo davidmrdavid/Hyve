@@ -11,7 +11,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 var wordSchema = mongoose.Schema({
         word: String,
-        time: Number
+        time: Date,
+        count: Number
 });
 
 
