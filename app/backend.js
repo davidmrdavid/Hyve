@@ -10,7 +10,7 @@ var DB_QUERY_INTERVAL   = 5000;
 var MAX_TOP_WORDS       = 20;
 
 var MASTER_COUNT_MODEL  = models.MasterCount;
-var WORD_COUNT_MODEL    = models.Student;
+var WORD_COUNT_MODEL    = models.Words;
 
 // OTHER GLOBAL VARIABLES
 var foundData    = new Object();

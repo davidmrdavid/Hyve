@@ -9,7 +9,7 @@ mongoose.connect(url)
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
-var studentSchema = mongoose.Schema({
+var wordSchema = mongoose.Schema({
         word: String,
         time: Number
 });
@@ -53,7 +53,7 @@ var masterWordSchema = mongoose.Schema({
 exports.MasterCount = mongoose.model('MasterCount', masterWordSchema);
 exports.Class = mongoose.model('Class',classSchema);
 exports.Teacher = mongoose.model('Teacher',teacherSchema);
-exports.Student = mongoose.model('Student',studentSchema);
+exports.Words = mongoose.model('Words',wordSchema);
 
 
 
