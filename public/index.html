@@ -30,7 +30,7 @@
       var editor = document.querySelector("#full-editor");
       editor.onkeypress = function (e) {
         var text = fullEditor.getText();
-        if (e.which === 32 || e.which === 33 || e.which === 44 || e.which === 46 || e.which === 47 || e.which === 63
+        if (e.which === 32 || e.which === 33 || e.which === 44 || e.which === 46 || e.which === 47 || e.which === 63 || e.which === 13
         ) {
           var match = /\w([A-Za-z']+)(?:[,.!?]?\s*)$/.exec(text);
           if (match !== null) {

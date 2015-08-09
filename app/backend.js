@@ -16,31 +16,34 @@ var WORD_COUNT_MODEL    = models.Words;
 var foundData    = new Object();
 var allWordsHash = new Object();
 
+WORD_COUNT_MODEL
+	.find()
+	.remove()
+	.exec();
 
 var saveWordFunc = function saveWord( socketJSON ){
 
 	var wordToQuery = socketJSON["word"];
 	console.log(wordToQuery);
 
+	WORD_COUNT_MODEL.find().exec(function(err,data){
+		console.log(data);
+	});
+
 	WORD_COUNT_MODEL
 		.find({ word: wordToQuery })
 		.exec( function(err, dataFound){
-			console.log("request on the database son!");
-
 			//if data was found, update count
-			if(dataFound){
-				console.log("old word");
-
-				var newCount = dataFound["count"] + 1 ;
+			if(dataFound.length){
+				var id = dataFound[0]["_id"];
+				console.log(id);
+				var newCount = dataFound[0]["count"] + 1;
 
 				WORD_COUNT_MODEL
-					.update({ word: wordToQuery }, 
-							{$set: { count: newCount }});
-			}
+					.update({ _id : id }, { $set: { count: newCount }});
 			//If data was not found, insert
+		}
 			else{
-				console.log("new word");
-
 				socketJSON["count"] = 1;
 
 				var newEntry = new WORD_COUNT_MODEL( socketJSON );
