@@ -31,7 +31,7 @@ var saveWordFunc = function saveWord( socketJSON ){
 				var newCount = dataFound["count"] + 1 ;
 
 				WORD_COUNT_MODEL
-					.update({ word: wordToQuery }), 
+					.update({ word: wordToQuery }, 
 							{$set: { count: newCount }});
 			}
 			//If data was not found, insert
@@ -39,7 +39,7 @@ var saveWordFunc = function saveWord( socketJSON ){
 
 				socketJSON["count"] = 1;
 
-				var newEntry = new WORD_COUNT_MODEL(){ socketJSON };
+				var newEntry = new WORD_COUNT_MODEL( socketJSON );
 				newEntry.save();
 			}
 
