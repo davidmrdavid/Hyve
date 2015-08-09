@@ -24,21 +24,16 @@ var Student=require('./config/dbMode.js').Student;
 var Class=require('./config/dbMode.js').Class;
 var Teacher=require('./config/dbMode.js').Teacher;
 
+app.http().io();
+// sockets
+app.io.route('new word', function (req) {
+  	backend.saveWord(req.data);
+});
+app.io.route('get top', function (req) {
+  	var trendingWords = backend.getTrendingWords(req.data);
+  	req.io.respond(req)
+});
+
 // start app ===============================================
 app.listen(port);
 exports = module.exports = app; 						// expose app
-
-app.http().io();
-// sockets
-app.io.on('connection', function (socket) {
-	app.io.on('new word', function (data) {
-    	// backend.saveWordFunc(data);
-    	console.log(data);
-
-	});
-	app.io.on('get top', function (data) {
-    	var trendingWords = backend.getTrendingWords(data);
-    	req.io.respond(req)
-	}); 
-
- });

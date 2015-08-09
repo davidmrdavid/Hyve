@@ -20,13 +20,16 @@ var allWordsHash = new Object();
 var saveWordFunc = function saveWord( socketJSON ){
 
 	var wordToQuery = socketJSON["word"];
+	console.log(wordToQuery);
 
 	WORD_COUNT_MODEL
-		.find({ "word": wordToQuery })
+		.find({ word: wordToQuery })
 		.exec( function(err, dataFound){
+			console.log("request on the database son!");
 
 			//if data was found, update count
 			if(dataFound){
+				console.log("old word");
 
 				var newCount = dataFound["count"] + 1 ;
 
@@ -36,11 +39,15 @@ var saveWordFunc = function saveWord( socketJSON ){
 			}
 			//If data was not found, insert
 			else{
+				console.log("new word");
 
 				socketJSON["count"] = 1;
 
 				var newEntry = new WORD_COUNT_MODEL( socketJSON );
-				newEntry.save();
+				newEntry.save(function(err, data){
+					console.log("just saved this mom");
+					console.log(data);
+				});
 			}
 
 		} )	

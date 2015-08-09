@@ -34,8 +34,8 @@
         ) {
           var match = /\w([A-Za-z']+)(?:[,.!?]?\s*)$/.exec(text);
           if (match !== null) {
-            var word = match[0].trim());
-            socket.io.emit("new word", {
+            var word = match[0].trim();
+            socket.emit("new word", {
               word: word,
               time: new Date()
             });
