@@ -31,29 +31,22 @@ var saveWordFunc = function saveWord( socketJSON ){
 	});
 
 	WORD_COUNT_MODEL
-		.find({ word: wordToQuery })
-		.exec( function(err, dataFound){
+		.findOne({ word: wordToQuery }, function(err, dataFound){
 			//if data was found, update count
-			if(dataFound.length){
-				var id = dataFound[0]["_id"];
-				console.log(id);
-				var newCount = dataFound[0]["count"] + 1;
-
-				WORD_COUNT_MODEL
-					.update({ _id : id }, { $set: { count: newCount }});
+			if(dataFound){
+				var newCount = dataFound["count"] + 1;
+				dataFound["count"] = newCount;
+				dataFound.save(function(err,data){});
 			//If data was not found, insert
-		}
+			}
 			else{
 				socketJSON["count"] = 1;
 
 				var newEntry = new WORD_COUNT_MODEL( socketJSON );
-				newEntry.save(function(err, data){
-					console.log("just saved this mom");
-					console.log(data);
-				});
+				newEntry.save(function(err, data){});
 			}
 
-		} )	
+		});
 }
 
 var getTrendingWordsFunc = function getTrendingWords(){
