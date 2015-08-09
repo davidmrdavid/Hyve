@@ -1,39 +1,36 @@
+<!doctype html>
+<html>
 <html>
 <head>
-  	<meta charset="UTF-8">
-  	<base href="/prof">
+    <meta charset="UTF-8">
+    <base href="/prof">
 
-  	<title>New Note &middot; Hyve1</title>
-  	<!-- Load c3.css -->
-	<link href="vis/c3.min.css" rel="stylesheet" type="text/css">
+    <title>New Note &middot; Hyve1</title>
+    <!-- Load c3.css -->
+  <link href="vis/c3.min.css" rel="stylesheet" type="text/css">
 
-	<!-- Load d3.js and c3.js -->
-	<script src="vis/d3.min.js" charset="utf-8"></script>
-	<script src="vis/c3.min.js"></script>
+  <!-- Load d3.js and c3.js -->
+  <script src="vis/d3.min.js" charset="utf-8"></script>
+  <script src="vis/c3.min.js"></script>
 
-	 <!-- CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+   <!-- CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-	 <!-- Include the Quill library -->
-	<link rel="stylesheet" href="http://cdn.quilljs.com/0.20.0/quill.snow.css" />
-	<script src="quill/quill.js"></script>
+   <!-- Include the Quill library -->
+  <link rel="stylesheet" href="http://cdn.quilljs.com/0.20.0/quill.snow.css" />
+  <script src="quill/quill.js"></script>
 
-	<link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 
-	<script src="/socket.io/socket.io.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 
-	<style type="text/css">
-		#chart{
-			width: 45%;
-			height: 70%;
-		}
-		#view2{
-			width: 45%;
-			height: 70%;
-			background-color: #000000;
-			float: right;
-		}
-	</style>
+  <style type="text/css">
+    #chart{
+      width: 80%;
+      height: 70%;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -52,28 +49,37 @@
   <div id="view1">
   <h1>Most prominent topics at the moment</h1>
   <div id="chart">
+  </div>
+  </div>
+  <script type="text/javascript">
+    var socket = io.connect("http://localhost:8080");
+    var chart = null;
 
-  </div>
- 	<script type="text/javascript">
-		var chart = c3.generate({
-    		data: {
-        		columns: [
-            		['data1', 30, 200, 100, 400, 150, 250],
-            		['data2', 130, 100, 140, 200, 150, 50]
-        		],
-        	type: 'bar'
-    		},
-    		bar: {
-        		width: {
-            		ratio: 0.5 
-  			  }
-		}});
+    function updateGraph (data) {
+      var newBars = [];
+      for (var i in data) {
+        newBars.push([ data[i].word, data[i].count ]);
+      }
+      if (chart) chart = chart.destroy();
+      chart = c3.generate({
+        data: {
+            columns: newBars,
+            type: 'bar'
+        },
+        bar: {
+            width: {
+                ratio: 0.5 
+          }
+        }
+      });
+    };
 
-		</script>
-  <div>
-  </div>
-  </div>
-  <div id="view2">
-  </div>
+    var chartUpdate = setInterval(function () {
+      socket.emit("get top", function (res) {
+        updateGraph(res);
+      });
+    }, 5000);
+
+    </script>
 </body>
 </html>

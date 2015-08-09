@@ -27,11 +27,12 @@ var Teacher=require('./config/dbMode.js').Teacher;
 app.http().io();
 // sockets
 app.io.route('new word', function (req) {
+		console.log("saveword");
   	backend.saveWord(req.data);
 });
 app.io.route('get top', function (req) {
-  	var trendingWords = backend.getTrendingWords(req.data);
-  	req.io.respond(req)
+		console.log("gettop");
+  	var trendingWords = backend.getTrendingWords(req);
 });
 
 // start app ===============================================

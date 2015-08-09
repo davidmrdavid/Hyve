@@ -24,11 +24,6 @@ WORD_COUNT_MODEL
 var saveWordFunc = function saveWord( socketJSON ){
 
 	var wordToQuery = socketJSON["word"];
-	console.log(wordToQuery);
-
-	WORD_COUNT_MODEL.find().exec(function(err,data){
-		console.log(data);
-	});
 
 	WORD_COUNT_MODEL
 		.findOne({ word: wordToQuery }, function(err, dataFound){
@@ -49,16 +44,14 @@ var saveWordFunc = function saveWord( socketJSON ){
 		});
 }
 
-var getTrendingWordsFunc = function getTrendingWords(){
-
-	WORD_COUNT_MODEL
+var getTrendingWordsFunc = function getTrendingWords(req){
+	var returnMe;
+	returnMe = WORD_COUNT_MODEL
 		.find()
-		.sort({ count: 1 }) //sort ascendingly
-		.limit( MAX_TOP_WORDS )
-		.exec( function(err, data){
-			updateProfDashborad( data )
-		} )
-}
+		.exec(function(err, data){
+			req.io.respond(data);
+		});
+};
 
 function updateProfDashborad( data ){
 	//socket.io stuff
@@ -67,4 +60,4 @@ function updateProfDashborad( data ){
 
 //defining public funcitons
 exports.saveWord         = saveWordFunc;
-exports.getTrendingWords = saveWordFunc;
+exports.getTrendingWords = getTrendingWordsFunc;
