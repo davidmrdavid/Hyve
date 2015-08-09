@@ -17,13 +17,6 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io.connect('http://localhost:8080');
-    
-    socket.emit("ready");
-
-    socket.on("new visitor", function () {
-      console.log("new visitor event fired from node");
-    });
-
 
     window.onload = function () {
       var fullEditor = new Quill('#full-editor', {
@@ -33,6 +26,22 @@
         },
         theme: 'snow'
       });
+
+      var editor = document.querySelector("#full-editor");
+      editor.onkeypress = function (e) {
+        var text = fullEditor.getText();
+        if (e.which === 32 || e.which === 33 || e.which === 44 || e.which === 46 || e.which === 47 || e.which === 63
+        ) {
+          var match = /\w([A-Za-z']+)(?:[,.!?]?\s*)$/.exec(text);
+          if (match !== null) {
+            var word = match[0].trim());
+            socket.io.emit("new word", {
+              word: word,
+              time: new Date()
+            });
+          }
+        }
+      };
 
       var cs = document.querySelector('.classSelect');
       cs.onmouseover = folderOpen;
@@ -61,11 +70,6 @@
   <!-- Create the toolbar container -->
   <div id="full-toolbar" class="toolbar">
     <span class="ql-format-group">
-      <select title="Font" class="ql-font">
-        <option value="sans-serif" selected="">Sans Serif</option>
-        <option value="serif">Serif</option>
-        <option value="monospace">Monospace</option>
-      </select>
       <select title="Size" class="ql-size">
         <option value="10px">Small</option>
         <option value="13px" selected="">Normal</option>
